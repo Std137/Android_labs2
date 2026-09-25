@@ -261,7 +261,8 @@ fun LineReset(context: Context = localContextProvider(), sliderState: SliderStat
         onClick = {
             sliderState.value = 760f
             Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-        }){
+        })
+    {
         Text("Сброс")
     }
 }
