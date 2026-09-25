@@ -12,6 +12,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -199,43 +201,37 @@ fun Slider(sliderState: SliderState) {
         }
     }
     val displayValue = (sliderState.value).toInt()
-
-    Column(
-        modifier = Modifier.padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Box(contentAlignment = Alignment.TopCenter) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+    Box(contentAlignment = Alignment.TopCenter) {
+        Column(
+            modifier = Modifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Surface(
+                modifier = Modifier.alpha(if (isPush) 1f else 0f),
+                shape = MaterialTheme.shapes.small,
+                color = MaterialTheme.colorScheme.primary,
+                shadowElevation = 4.dp
             ) {
-                Surface(
-                    modifier = Modifier.alpha(if (isPush) 1f else 0f),
-                    shape = MaterialTheme.shapes.small,
-                    color = MaterialTheme.colorScheme.primary,
-                    shadowElevation = 4.dp
-                ) {
-                    Text(
-                        text = "$displayValue",
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = 14.sp
-                    )
-                }
-
-                Slider(
-                    state = sliderState,
-                    interactionSource = interactionSource,
-                    thumb = {
-                        SliderDefaults.Thumb(
-                            interactionSource = interactionSource,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    track = { SliderDefaults.Track(sliderState = sliderState) }
+                Text(
+                    text = "$displayValue",
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    color = Color.Black,
+                    fontSize = 14.sp
                 )
             }
+
+            Slider(
+                state = sliderState,
+                interactionSource = interactionSource,
+                thumb = {
+                    SliderDefaults.Thumb(
+                        interactionSource = interactionSource,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                track = { SliderDefaults.Track(sliderState = sliderState) }
+            )
         }
     }
 }
@@ -261,8 +257,7 @@ fun LineReset(context: Context = localContextProvider(), sliderState: SliderStat
         onClick = {
             sliderState.value = 760f
             Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-        })
-    {
+        }){
         Text("Сброс")
     }
 }
