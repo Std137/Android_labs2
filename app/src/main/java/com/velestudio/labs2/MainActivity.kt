@@ -256,7 +256,7 @@ fun LinePressure(mmHg: Float) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LineReset(context: Context = localContextProvider(), sliderState: SliderState) {
-    val text: String = "Настройки сброшены"
+    val text = "Настройки сброшены"
     ElevatedButton(
         onClick = {
             sliderState.value = 760f
