@@ -12,7 +12,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -64,6 +63,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Body(context: Context = localContextProvider()) {
     var pressure by remember { mutableStateOf<Float?>(null) }
+    var pressureInt = 760
     var stateWeather by remember { mutableStateOf(false) }
     val sliderState = rememberSliderState (
         value = 760f,
@@ -76,8 +76,8 @@ fun Body(context: Context = localContextProvider()) {
         val listener = object : SensorEventListener {
             override fun onSensorChanged(event: SensorEvent) {
                 pressure = event.values[0]
-                pressure = pressure!! * 0.750062f
-                stateWeather = (pressure!! > sliderState.value)
+                pressureInt = (pressure!! * 0.750062f).toInt()
+                stateWeather = (pressureInt < sliderState.value)
             }
 
             override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
@@ -123,7 +123,7 @@ fun Body(context: Context = localContextProvider()) {
                     WhetherImage(stateWeather)
                     LineForecast(stateWeather)
                     Slider(sliderState)
-                    LinePressure(pressure!!)
+                    LinePressure(pressureInt)
                     LineReset(sliderState = sliderState)
                 }
                 else LineSensorError()
@@ -238,9 +238,9 @@ fun Slider(sliderState: SliderState) {
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun LinePressure(mmHg: Float) {
+fun LinePressure(mmHg: Int) {
     Text(
-        text = String.format("Текущее давление: \n %.1f mmHg", mmHg),
+        text = "Текущее давление: \n $mmHg mmHg",
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.headlineLarge,
         modifier = Modifier
